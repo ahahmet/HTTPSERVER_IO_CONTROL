@@ -1,10 +1,8 @@
 <html>
 
     <head>
-        <style> h1{text-align: center;}</style>
         <meta charset="UTF-8"> 
-        <title> Miltera Test server Version 1.0 </title>
-        <link rel="shorcut icon" href="/static/favicon.ico"/>
+        <title> Test server Version 1.0 </title>
     </head>
 
     <style>
@@ -29,8 +27,6 @@
           right: 0;
           bottom: 0;
           background-color: #ccc;
-          -webkit-transition: .4s;
-          transition: .4s;
         }
         
         .slider:before {
@@ -41,8 +37,8 @@
           left: 4px;
           bottom: 4px;
           background-color: white;
-          -webkit-transition: .4s;
-          transition: .4s;
+          -webkit-transition: .5s;
+          transition: .5s;
         }
         
         input:checked + .slider {
@@ -75,6 +71,20 @@
             border: 6px solid #93a4a4;
         }
 
+        .save { 
+          background-color: rgb(72, 50, 50); 
+          border: none;
+          color: white; 
+          padding: 15px 32px; 
+          text-align: center; 
+          text-decoration: none; 
+          display: inline-block;
+          font-size: 16px; 
+          margin: 4px 2px; 
+          cursor: pointer;
+        }
+        
+
     </style>
 
     <body style="background-color:rgb(210, 222, 220);">
@@ -98,47 +108,31 @@
         </center>
 
         <br>
+        <form action="/io" method="post">
+          <table>
+            
+              <tr>
+                  <td style="width:5%">IO Index</td>
+                  <td style="width:5%">State</td>
+              </tr>
+            {% for i in range(0, len) %} 
+              <tr>
+                  <td>{{i}}</td>
+                  <td>
+                      <label class="switch">
+                          <input type="checkbox" name="{{button[i]}}"  {{checked[i]}}/>
+                          <span class="slider"></span>
+                      </label>
+                  </td>
+              </tr>
+            {%endfor%}
+          </table>
 
-        <table>
-            <tr>
-                <td style="width:5%">IO Index</td>
-                <td style="width:5%">State</td>
-            </tr>
-
-            <tr>
-                <td>1</td>
-
-                <td>
-                    <label class="switch">
-                        <input type="checkbox"/>
-                        <span class="slider"></span>
-                    </label>
-                </td>
-            </tr>
-
-            <tr>
-                <td>2</td>
-
-                <td>
-                    <label class="switch">
-                        <input type="checkbox"/>
-                        <span class="slider"></span>
-                    </label>
-                </td>
-            </tr>
-
-            <tr>
-                <td>3</td>
-
-                <td>
-                    <label class="switch">
-                        <input type="checkbox"/>
-                        <span class="slider"></span>
-                    </label>
-                </td>
-            </tr>
-        </table>
+          <center>
+            <br>
+            <input class="save" type="submit" value="saved">
+          </center>
+        
+        </form>
     </body>
-
-
 </html>
