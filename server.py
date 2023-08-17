@@ -15,9 +15,14 @@ Comment:
 from crypt import methods
 from flask import Flask, render_template, jsonify, request, redirect
 import ssl
+import RPi.GPIO as GPIO
+
 
 buttons = ['IO1', 'IO2', 'IO3']
+pins = [23, 24, 25]
 
+for i in pins:
+    GPIO.setup(pins[i], GPIO.OUT)
 
 app = Flask(__name__)
 
@@ -56,6 +61,11 @@ def io_page():
             checked.append(' ')
             if str(control) == 'on':
                 checked[i] = 'checked'
+                GPIO.output(pins[i], GPIO.OUT)
+            else:
+                GPIO.output(pins[i], GPIO.OUT)
+
+
         
         template = render_template('io.html', len = len(buttons), button = buttons, checked = checked)
 
