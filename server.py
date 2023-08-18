@@ -15,22 +15,23 @@ Comment:
 from crypt import methods
 from flask import Flask, render_template, jsonify, request, redirect
 import ssl
-import RPi.GPIO as GPIO
-
+import datetime
+from ring_buffer import RingBuffer
+#import RPi.GPIO as GPIO
 
 buttons = ['IO1', 'IO2', 'IO3']
 pins = [23, 24, 25]
 
-for i in pins:
-    GPIO.setup(pins[i], GPIO.OUT)
+valid_name = "ahmet"
+valid_pwd = "1234" 
 
-app = Flask(__name__)
-
+buff_len = 10
+msg_button = RingBuffer(buff_len)
+msg_time = RingBuffer(buff_len)
 #context = ssl.SSLContext()
 #context.load_cert_chain('/home/ahmet/Desktop/python_projects/rootCACert.pem', '/home/ahmet/Desktop/python_projects/rootCAKey.pem')
 
-valid_name = "ahmet"
-valid_pwd = "1234"
+app = Flask(__name__)
 
 @app.route("/", methods = ['GET', 'POST'])
 def login_page():
@@ -59,23 +60,26 @@ def io_page():
         if request.method == 'POST':
             control = request.form.get(buttons[i])
             checked.append(' ')
+            current_time = datetime.datetime.now()
+            msg_time.add(current_time)
             if str(control) == 'on':
                 checked[i] = 'checked'
-                GPIO.output(pins[i], GPIO.OUT)
+                msg_button.add(str(buttons[i] + " on"))
+                print("gpio output is high")
             else:
-                GPIO.output(pins[i], GPIO.OUT)
+                msg_button.add(str(buttons[i] + " off"))
+                print("gpio output is low")
+            
 
-
-        
         template = render_template('io.html', len = len(buttons), button = buttons, checked = checked)
 
-        print("template", template)
     return template
 
 
 @app.route("/log", methods = ['GET'])
 def log_page():
-    return render_template('log.html')
+    return render_template('log.html', len = buff_len, time = msg_time.getAll(), 
+                           message = msg_button.getAll())
 
 if __name__ == '__main__':
     app.run(debug= True, host='192.168.1.168', port = 8000)

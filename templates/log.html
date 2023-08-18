@@ -38,7 +38,7 @@
                 font-family: "Times New Roman", 
             cursive;
                 background-color: #413f3f;
-                color:#ff0000;
+                color:#d9c5c5;
             }
      
             table td{
@@ -50,20 +50,17 @@
     <body>
         <table>
             <tr>
-                <td style="width:5%" >Index</td>
-                <td>Time</td>
-                <td>String</td>
+                <td style="color:rgb(241, 13, 13);">Index</td>
+                <td style="color:rgb(241, 13, 13)">Time</td>
+                <td style="color:rgb(241, 13, 13)">Log Message</td>
             </tr>
-            <tr>
-                <td style="width:5%">1</td>
-                <td>00:00</td>
-                <td>Hello</td>
-            </tr>
-            <tr>
-                <td style="width: 5%;">2</td>
-                <td>00:00</td>
-                <td>World</td>
-            </tr>
+            {% for i in range(0, len) %} 
+                <tr>
+                    <td style="width:5%">{{i}}</td>
+                    <td>{{time[i]}}</td>
+                    <td>{{message[i]}}</td>
+                </tr>
+            {%endfor%}
 
         </table>
     </body>
