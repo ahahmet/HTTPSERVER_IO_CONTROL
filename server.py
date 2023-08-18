@@ -28,7 +28,8 @@ buttons = ['IO1', 'IO2', 'IO3']
 # IO number and initialize
 pins = [23, 24, 25]
 """ gpio = BoardGPIO(len(pins))
-gpio.gpio_init() """
+gpio.gpio_cleanUp()
+gpio.gpio_init(pins) """
 
 # Ring Buffer
 buff_len = 10
@@ -61,11 +62,11 @@ def io_page():
             if str(control) == 'on':
                 checked[i] = 'checked'
                 msg_button.add(str(buttons[i] + " on"))
-                #gpio.output_on(i)
+                #gpio.output_on(pins[i])
                 print("gpio output is high")
             else:
                 msg_button.add(str(buttons[i] + " off"))
-                #gpio.output_on(i)
+                #gpio.output_off(pins[i])
                 print("gpio output is low")         
 
         template = render_template('io.html', len = len(buttons), button = buttons, checked = checked)
