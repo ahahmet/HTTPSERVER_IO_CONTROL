@@ -54,7 +54,7 @@
                 <td style="color:rgb(241, 13, 13)">Time</td>
                 <td style="color:rgb(241, 13, 13)">Log Message</td>
             </tr>
-            {% for i in range(0, len) %} 
+            {% for i in range(len-1, 0, -1) %} 
                 <tr>
                     <td style="width:5%">{{i}}</td>
                     <td>{{time[i]}}</td>

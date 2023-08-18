@@ -17,38 +17,33 @@ from flask import Flask, render_template, jsonify, request, redirect
 import ssl
 import datetime
 from ring_buffer import RingBuffer
-#import RPi.GPIO as GPIO
+#from gpio import BoardGPIO
 
+#IP
+host = '192.168.1.168'
+
+#button name for html
 buttons = ['IO1', 'IO2', 'IO3']
+
+# IO number and initialize
 pins = [23, 24, 25]
+""" gpio = BoardGPIO(len(pins))
+gpio.gpio_init() """
 
-valid_name = "ahmet"
-valid_pwd = "1234" 
-
+# Ring Buffer
 buff_len = 10
 msg_button = RingBuffer(buff_len)
 msg_time = RingBuffer(buff_len)
+
+#If you want to use ssl on your server, please uncommand the line in below
+#cert_dir = " "
+#key_dir = " " 
 #context = ssl.SSLContext()
-#context.load_cert_chain('/home/ahmet/Desktop/python_projects/rootCACert.pem', '/home/ahmet/Desktop/python_projects/rootCAKey.pem')
+#context.load_cert_chain( cert_dir, key_dir)
 
 app = Flask(__name__)
 
 @app.route("/", methods = ['GET', 'POST'])
-def login_page():
-    if request.method == "POST":
-        name = request.form.get('name')
-        pwd = request.form.get('pwd')
-        print(name, pwd)
-        if (valid_name == name) & (valid_pwd == pwd):
-            access_flag = True
-            print("access flag is = ", access_flag)
-            print("Pasword is correct")
-            return redirect('/home_page')
-
-        return "Invalid User Name and User Password"
-    return render_template('login.html')
-
-@app.route("/home_page", methods = ['GET', 'POST'])
 def home_page():
     return render_template('home_page.html')
     
@@ -62,19 +57,19 @@ def io_page():
             checked.append(' ')
             current_time = datetime.datetime.now()
             msg_time.add(current_time)
+            #check the clicked button
             if str(control) == 'on':
                 checked[i] = 'checked'
                 msg_button.add(str(buttons[i] + " on"))
+                #gpio.output_on(i)
                 print("gpio output is high")
             else:
                 msg_button.add(str(buttons[i] + " off"))
-                print("gpio output is low")
-            
+                #gpio.output_on(i)
+                print("gpio output is low")         
 
         template = render_template('io.html', len = len(buttons), button = buttons, checked = checked)
-
     return template
-
 
 @app.route("/log", methods = ['GET'])
 def log_page():
@@ -82,5 +77,5 @@ def log_page():
                            message = msg_button.getAll())
 
 if __name__ == '__main__':
-    app.run(debug= True, host='192.168.1.168', port = 8000)
+    app.run(debug= True, host= host, port = 8000)
     #app.run(debug= TRUE, host='192.168.10.150', port = 8000, ssl_context = context)
