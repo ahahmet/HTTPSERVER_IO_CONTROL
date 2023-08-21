@@ -10,7 +10,8 @@ In addition, you can adjust log count changing the buff_len variable, it's defau
 
 # HOME PAGE
 
+![My Remote Image](https://github.com/ahahmet/HTTPSERVER_IO_CONTROL/blob/main/HOMEPAGE.jpg)
 # IO PAGE
-
-
+![My Remote Image](https://github.com/ahahmet/HTTPSERVER_IO_CONTROL/blob/main/IOPAGE.jpg)
 # LOG PAGE
+![My Remote Image](https://github.com/ahahmet/HTTPSERVER_IO_CONTROL/blob/main/LOGPAGE.jpg)
